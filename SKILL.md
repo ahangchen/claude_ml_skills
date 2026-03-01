@@ -320,13 +320,12 @@ project/
 │   ├── default.yaml      # 默认配置
 │   ├── train.yaml        # 训练配置
 │   └── test.yaml         # 测试配置
-├── script/               # 脚本文件（通用）
-│   ├── preprocess_data.py    # 数据预处理
-│   ├── train.sh              # 训练启动脚本
-│   ├── eval.sh               # 评估脚本
-│   ├── deploy.sh             # 部署脚本
-│   ├── visualize.py          # 可视化脚本
-│   └── convert_model.py      # 模型转换脚本
+├── script/               # Shell脚本（仅.sh文件）
+│   ├── train.sh          # 训练启动脚本
+│   ├── eval.sh           # 评估脚本
+│   ├── test.sh           # 测试脚本
+│   ├── deploy.sh         # 部署脚本
+│   └── download_data.sh  # 数据下载脚本
 ├── model/                # 模型结构（model-architect）
 │   ├── __init__.py       # build_model()
 │   ├── resnet.py         # ResNet系列
@@ -335,14 +334,19 @@ project/
 │   ├── __init__.py       # build_loss()
 │   ├── focal.py          # Focal Loss
 │   └── dice.py           # Dice Loss
-├── util/                 # 工具函数（通用）
+├── util/                 # 工具函数和脚本（通用）
 │   ├── visualization.py  # 可视化工具
-│   ├── metrics.py        # 评价指标
-│   └── logger.py         # 日志工具
+│   ├── logger.py         # 日志工具
+│   ├── preprocess_data.py    # 数据预处理脚本
+│   ├── visualize.py      # 可视化脚本
+│   ├── convert_model.py  # 模型转换脚本
+│   ├── download_weights.py  # 下载预训练权重
+│   └── check_environment.py # 环境检查脚本
 ├── engine/               # 训练引擎（algorithm-designer + performance-tuner）
 │   ├── trainer.py        # 训练器
 │   ├── train.py          # 训练入口
-│   └── test.py           # 测试入口
+│   ├── test.py           # 测试入口
+│   └── benchmark.py      # 性能基准测试
 ├── datalist/             # 数据列表
 │   ├── train.txt         # 训练集列表
 │   └── test.txt          # 测试集列表
@@ -352,6 +356,7 @@ project/
 │   ├── transform.py      # 数据增强
 │   └── sampler.py        # 采样器
 ├── metrics/              # 评价指标（test-engineer + algorithm-designer）
+│   ├── __init__.py       # build_metrics()
 │   ├── accuracy.py       # 准确率
 │   ├── iou.py            # IoU
 │   └── map.py            # mAP

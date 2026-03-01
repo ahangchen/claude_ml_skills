@@ -437,47 +437,33 @@ class Runner:
 
 ---
 
-### 采样策略
+### 采样策略设计
 
 #### 类别平衡采样
 
+**设计思路**：每个类别采样相同数量的样本，平衡训练
+
+**设计参数**：
+- `num_samples_per_class`: 每个类别采样的样本数
+- `replace`: 是否允许重复采样
+
+**使用方式**：
 ```python
-# datasets/sampler.py
-from torch.utils.data import Sampler
-import numpy as np
-
-class ClassBalancedSampler(Sampler):
-    def __init__(self, labels, num_samples_per_class=100):
-        self.labels = np.array(labels)
-        self.num_classes = len(np.unique(labels))
-        self.num_samples_per_class = num_samples_per_class
-        
-        # 为每个类别构建索引列表
-        self.class_indices = {}
-        for cls in range(self.num_classes):
-            self.class_indices[cls] = np.where(self.labels == cls)[0]
-    
-    def __iter__(self):
-        batch = []
-        for cls in range(self.num_classes):
-            # 每个类别随机采样
-            indices = np.random.choice(
-                self.class_indices[cls], 
-                self.num_samples_per_class, 
-                replace=True
-            )
-            batch.extend(indices)
-        
-        np.random.shuffle(batch)
-        return iter(batch)
-    
-    def __len__(self):
-        return self.num_samples_per_class * self.num_classes
-
-# 使用
+# 由 data-engineer 在 dataset/sampler.py 中实现
 sampler = ClassBalancedSampler(dataset.labels, num_samples_per_class=100)
 dataloader = DataLoader(dataset, batch_size=32, sampler=sampler)
 ```
+
+**设计决策**：
+- **何时使用**: 类别不平衡时（如少数类样本 < 1/10 多数类）
+- **参数选择**: 
+  - `num_samples_per_class` = min(多数类样本数, 1000)
+  - `replace=True` 允许重复采样少数类
+- **预期效果**: 每个epoch每类采样相同数量，平衡训练
+
+**委派给 data-engineer**:
+- 采样器的具体代码实现（`dataset/sampler.py`）
+- DataLoader 配置（`dataset/dataloader.py`）
 
 ---
 

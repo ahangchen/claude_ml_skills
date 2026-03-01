@@ -463,10 +463,11 @@ for i, (x, y) in enumerate(dataloader):
 
 **代码模板**：
 ```python
-# datasets/loader.py
+# dataset/dataloader.py（由 data-engineer 实现）
 from torch.utils.data import DataLoader
 
 def build_dataloader(dataset, opts, shuffle=True):
+    """构建数据加载器（由 data-engineer 实现）"""
     return DataLoader(
         dataset,
         batch_size=opts.batch_size,
@@ -478,12 +479,20 @@ def build_dataloader(dataset, opts, shuffle=True):
     )
 ```
 
-**配置**：
+**性能优化配置**：
 ```python
-# options.py
-parser.add_argument('--num_workers', type=int, default=8,
-                    help='DataLoader workers数，建议设为CPU核心数')
+# config/train.yaml（由 accuracy-tuner 调优）
+data:
+  num_workers: 8           # CPU 核心数
+  pin_memory: true         # 锁页内存
+  prefetch_factor: 2       # 预取因子
+  persistent_workers: true # 持久化 worker
 ```
+
+**注意**：
+- DataLoader 的具体实现由 **data-engineer** 负责
+- 性能参数优化建议由 **performance-tuner** 提供
+- 最终配置由 **accuracy-tuner** 在训练调优时确定
 
 ---
 

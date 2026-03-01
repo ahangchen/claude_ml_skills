@@ -1,13 +1,13 @@
 ---
 name: ml-skill
-description: ML模型训练全流程协作skill。适用于深度学习项目从规划到部署的完整流程。当用户提到"训练模型"、"深度学习"、"调参"、"优化精度"等ML相关任务时使用。8个专业subagent覆盖项目规划、架构设计、算法设计、性能优化、精度调优、测试评估、文档编写、架构搜索。
+description: ML模型训练全流程协作skill。适用于深度学习项目从规划到部署的完整流程。当用户提到"训练模型"、"深度学习"、"调参"、"优化精度"等ML相关任务时使用。9个专业subagent覆盖项目规划、架构设计、算法设计、性能优化、精度调优、测试评估、文档编写、架构搜索、数据工程。
 ---
 
 # ML模型训练Skill
 
 ## 概述
 
-本 skill 提供完整的深度学习训练工作流，通过 8 个专业 subagent 协作完成从项目启动到模型部署的全流程。
+本 skill 提供完整的深度学习训练工作流，通过 9 个专业 subagent 协作完成从项目启动到模型部署的全流程。
 
 **核心能力**：
 - 📋 **项目规划** - 制定计划、分解任务、评估风险
@@ -18,16 +18,18 @@ description: ML模型训练全流程协作skill。适用于深度学习项目从
 - ✅ **测试评估** - 编写评估脚本、设计测试用例、验证性能
 - 📖 **文档编写** - 编写README、API文档、使用教程
 - 🔍 **架构搜索** - NAS搜索最优架构、模型压缩
+- 💾 **数据工程** - 数据预处理、Dataset开发、DataLoader配置
 
 **何时使用**：
 - 开始新的深度学习项目
 - 需要训练或优化模型
 - 遇到训练问题（OOM、精度不提升、速度慢）
 - 需要设计或修改网络架构
+- 需要处理或准备数据
 
 ---
 
-## 8个专业Agent
+## 9个专业Agent
 
 ### 1. project-planner - 项目规划专家
 
@@ -71,13 +73,40 @@ description: ML模型训练全流程协作skill。适用于深度学习项目从
 
 ---
 
-### 3. algorithm-designer - 算法设计专家
+### 3. data-engineer - 数据工程专家
+
+**职责**：数据预处理、Dataset开发、DataLoader配置、数据可视化
+
+**何时委派**：数据预处理、开发自定义Dataset、配置DataLoader、数据增强设计、数据质量检查
+
+**输出位置**：`dataset/`, `datalist/`, `util/preprocess_data.py`
+
+**委派示例**：
+```json
+{
+  "task": "prepare_data",
+  "data_source": {
+    "path": "./data/raw",
+    "format": "ImageNet",
+    "num_samples": 50000
+  },
+  "requirements": {
+    "batch_size": 32,
+    "num_workers": 8,
+    "augmentation": true
+  }
+}
+```
+
+---
+
+### 4. algorithm-designer - 算法设计专家
 
 **职责**：设计损失函数、配置优化器、定义评估指标
 
 **何时委派**：设计自定义损失函数、处理类别不平衡、配置学习率策略
 
-**输出位置**：`runner.py`（`compute_loss()`方法）
+**输出位置**：`loss/`, `engine/trainer.py`
 
 **委派示例**：
 ```json
@@ -92,7 +121,7 @@ description: ML模型训练全流程协作skill。适用于深度学习项目从
 
 ---
 
-### 4. performance-tuner - 性能调优专家
+### 5. performance-tuner - 性能调优专家
 
 **职责**：解决显存OOM、加速训练、优化GPU利用率
 
@@ -132,7 +161,7 @@ description: ML模型训练全流程协作skill。适用于深度学习项目从
 
 ---
 
-### 6. test-engineer - 测试开发专家
+### 7. test-engineer - 测试开发专家
 
 **职责**：编写评估脚本、设计测试用例、验证性能
 
@@ -153,7 +182,7 @@ description: ML模型训练全流程协作skill。适用于深度学习项目从
 
 ---
 
-### 7. doc-writer - 文档编写专家
+### 8. doc-writer - 文档编写专家
 
 **职责**：编写README、API文档、使用教程
 
@@ -172,7 +201,7 @@ description: ML模型训练全流程协作skill。适用于深度学习项目从
 
 ---
 
-### 8. nas-specialist - 网络架构搜索专家
+### 9. nas-specialist - 网络架构搜索专家
 
 **职责**：使用NAS搜索最优架构、模型压缩、架构优化
 

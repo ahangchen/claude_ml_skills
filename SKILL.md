@@ -320,6 +320,13 @@ project/
 │   ├── default.yaml      # 默认配置
 │   ├── train.yaml        # 训练配置
 │   └── test.yaml         # 测试配置
+├── script/               # 脚本文件（通用）
+│   ├── preprocess_data.py    # 数据预处理
+│   ├── train.sh              # 训练启动脚本
+│   ├── eval.sh               # 评估脚本
+│   ├── deploy.sh             # 部署脚本
+│   ├── visualize.py          # 可视化脚本
+│   └── convert_model.py      # 模型转换脚本
 ├── model/                # 模型结构（model-architect）
 │   ├── __init__.py       # build_model()
 │   ├── resnet.py         # ResNet系列
